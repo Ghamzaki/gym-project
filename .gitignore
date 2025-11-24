@@ -2,11 +2,10 @@
 # IMPORTANT: Replace these values with your actual production secrets
 
 # SECRET_KEY: Generate a strong random secret (run: openssl rand -hex 32)
-SECRET_KEY=d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8
+SECRET_KEY="8878e40eaf15f8864e81419e7ca3b96a5ce469fcc4ee9ac6f5f49346223c3458"
 
 # DATABASE_URL: PostgreSQL connection string from Render
-DATABASE_URL=postgresql://gym_user:your_password_here@your_host:5432/gym_db
-
+DATABASE_URL = "postgresql://gym_db_qpt9_user:G8xeI9xXoUpLaN5w7V6zlMhdwh0xQLVD@dpg-d4i1bi6mcj7s73caqrg0-a.oregon-postgres.render.com/gym_db_qpt9"
 # CORS origins: Set to your frontend URL(s) in production
 BACKEND_CORS_ORIGINS=["https://gym-project-tl8f.onrender.com"]
 
