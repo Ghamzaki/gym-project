@@ -2,9 +2,7 @@ import os
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
-# Load environment variables from .env file
 load_dotenv()
-
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Gym Management API"
@@ -18,7 +16,7 @@ class Settings(BaseSettings):
 
     # Database settings
     # Set DATABASE_URL in your environment for production (e.g., Render PostgreSQL)
-    DATABASE_URL: str
+    DATABASE_URL: str = "sqlite:///./test.db"
 
     # Allow extra environment variables
     model_config = {
