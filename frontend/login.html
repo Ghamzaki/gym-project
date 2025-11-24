@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - Gym Management</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Login</h1>
+    <form id="login-form">
+      <label>Email<input type="email" name="username" required></label>
+      <label>Password<input type="password" name="password" required></label>
+      <button type="submit">Login</button>
+    </form>
+    <pre id="result" class="result"></pre>
+    <p><a href="/register.html">Create an account</a></p>
+  </main>
+  <script>
+    const form = document.getElementById('login-form');
+    const result = document.getElementById('result');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const body = new URLSearchParams();
+      body.append('username', fd.get('username'));
+      body.append('password', fd.get('password'));
+      try {
+        const res = await fetch('/api/v1/login/access-token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          const msg = data.detail || (data.message || JSON.stringify(data));
+          result.textContent = msg;
+        } else {
+          result.textContent = JSON.stringify(data, null, 2);
+        }
+      } catch (err) {
+        result.textContent = String(err);
+      }
+    });
+  </script>
+</body>
+</html>

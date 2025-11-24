@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Register - Gym Management</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Create an account</h1>
+    <form id="register-form">
+      <label>Email<input type="email" name="email" required></label>
+      <label>Full name<input type="text" name="full_name"></label>
+      <label>Password<input type="password" name="password" required></label>
+      <button type="submit">Register</button>
+    </form>
+    <pre id="result" class="result"></pre>
+    <p><a href="/login.html">Already have an account? Login</a></p>
+  </main>
+  <script>
+    const form = document.getElementById('register-form');
+    const result = document.getElementById('result');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const password = fd.get('password') || '';
+      // client-side safety: warn if password may exceed bcrypt 72-byte limit
+      if (new TextEncoder().encode(password).length > 72) {
+        alert('Password is longer than 72 bytes when UTF-8 encoded. Consider a shorter password or the registration may fail on older backends.');
+        return;
+      }
+      const payload = {
+        email: fd.get('email'),
+        full_name: fd.get('full_name'),
+        password: fd.get('password')
+      };
+      try {
+        const res = await fetch('/api/v1/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          // Show server error message if available
+          const msg = data.detail || (data.message || JSON.stringify(data));
+          result.textContent = msg;
+        } else {
+          result.textContent = JSON.stringify(data, null, 2);
+        }
+      } catch (err) {
+        result.textContent = String(err);
+      }
+    });
+  </script>
+</body>
+</html>

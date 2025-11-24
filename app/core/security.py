@@ -6,7 +6,16 @@ from jose import jwt
 
 from app.core.config import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Prefer Argon2 for hashing when available. If Argon2 is not installed,
+# fall back to bcrypt. When Argon2 is available we avoid loading bcrypt
+# to prevent issues with a broken/older bcrypt wheel.
+try:
+	import argon2  # type: ignore
+	_schemes = ["argon2"]
+except Exception:
+	_schemes = ["bcrypt"]
+
+pwd_context = CryptContext(schemes=_schemes, deprecated="auto")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
